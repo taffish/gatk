@@ -19,7 +19,7 @@ taf install gatk
 Install the exact release:
 
 ```sh
-taf install gatk 4.6.2.0-r1
+taf install gatk 4.6.2.0-r2
 ```
 
 For local testing before the app is published to the public index:
@@ -154,9 +154,9 @@ taf-gatk gatk ToolName --help
 ```text
 name: gatk
 command: taf-gatk
-version: 4.6.2.0-r1
+version: 4.6.2.0-r2
 kind: tool
-image: ghcr.io/taffish/gatk:4.6.2.0-r1
+image: ghcr.io/taffish/gatk:4.6.2.0-r2
 ```
 
 ## Container
@@ -183,19 +183,18 @@ release therefore declares native support for:
 linux/amd64
 ```
 
-On Apple Silicon or other arm64 hosts, Docker or Podman may still run this
-image through amd64 emulation. That is a compatibility mode, not native arm64
-support:
+For Docker and Podman, `src/main.taf` declares `--platform linux/amd64`, so
+Apple Silicon or other arm64 hosts may run this image through amd64 emulation
+without setting a global platform variable. That is a compatibility mode, not
+native arm64 support:
 
 ```sh
 TAFFISH_CONTAINER_BACKEND=docker \
-TAFFISH_DOCKER_RUN_ARGS="--platform linux/amd64" \
 taf-gatk gatk --version
 ```
 
 ```sh
 TAFFISH_CONTAINER_BACKEND=podman \
-TAFFISH_PODMAN_RUN_ARGS="--platform linux/amd64" \
 taf-gatk gatk --version
 ```
 
