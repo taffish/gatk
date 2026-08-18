@@ -1,7 +1,6 @@
-taf-gatk 4.6.2.0-r2
+taf-gatk 4.7.0.0-r1
 
-TAFFISH wrapper for GATK, the Genome Analysis Toolkit 4 from the Broad
-Institute.
+TAFFISH wrapper for GATK, the Genome Analysis Toolkit 4 from the Broad Institute.
 
 Usage:
   taf-gatk [TAF-APP-OPTION]
@@ -16,7 +15,6 @@ TAF app options:
 
 Upstream option calls:
   taf-gatk -- --version
-  taf-gatk -- --help
   taf-gatk -- --list
 
 Recommended GATK calls:
@@ -29,6 +27,7 @@ Recommended GATK calls:
   taf-gatk gatk GenotypeGVCFs -R ref.fa -V cohort.g.vcf.gz -O cohort.vcf.gz
   taf-gatk gatk Mutect2 -R ref.fa -I tumor.bam -I normal.bam -normal normal -O somatic.vcf.gz
   taf-gatk gatk FilterMutectCalls -R ref.fa -V somatic.vcf.gz -O somatic.filtered.vcf.gz
+  taf-gatk gatk ConvertCountsToDepthFile --counts-filename counts.tsv --sequence-dictionary ref.dict -O depth.rd.txt.gz
 
 JVM options:
   taf-gatk gatk --java-options "-Xmx8g" HaplotypeCaller -R ref.fa -I sample.bam -O out.g.vcf.gz -ERC GVCF
@@ -41,23 +40,20 @@ Included upstream/container commands:
   java       Java runtime used by GATK
   python     Python runtime from the official GATK conda environment
   R, Rscript R runtime used by selected plotting paths
-  samtools   Included in Broad's official GATK Docker runtime
-  bcftools   Included in Broad's official GATK Docker runtime
-  bedtools   Included in Broad's official GATK Docker runtime
-  tabix      Included in Broad's official GATK Docker runtime
+  samtools, bcftools, bedtools, tabix  Broad's bundled genomics helpers
 
 Notes:
   - This command runs GATK inside the TAFFISH container image.
   - The clearest command-mode form is taf-gatk gatk ToolName ...
-  - GATK tool names such as HaplotypeCaller, Mutect2, GenotypeGVCFs, and
-    CreateSequenceDictionary are subcommands of gatk, not standalone
-    executables. Use taf-gatk gatk HaplotypeCaller ..., not taf-gatk
-    HaplotypeCaller ...
+  - GATK tool names are subcommands of gatk, not standalone executables; use
+    taf-gatk gatk HaplotypeCaller ..., not taf-gatk HaplotypeCaller ...
   - taf-gatk --help and taf-gatk --version are handled by the TAFFISH command
     wrapper. Use taf-gatk gatk --version or taf-gatk -- --version for the
     upstream GATK version.
   - Use taf-gatk gatk --list to see the upstream tool list.
   - Use taf-gatk gatk ToolName --help for complete upstream tool options.
+  - GATK 4.7 writes CRAM 3.1 by default; use --output-cram-version 3.0 only
+    when downstream software cannot read CRAM 3.1.
   - Inputs and outputs should be accessible from the current working directory
     or from mounted user paths.
   - Most real analyses require reference FASTA indexes, sequence dictionaries,
@@ -78,8 +74,8 @@ Platform:
     TAFFISH_CONTAINER_BACKEND=podman taf-gatk gatk --version
 
 Container:
-  image: ghcr.io/taffish/gatk:4.6.2.0-r2
-  upstream base: broadinstitute/gatk:4.6.2.0
+  image: ghcr.io/taffish/gatk:4.7.0.0-r1
+  upstream base: broadinstitute/gatk:4.7.0.0
   supported backends: apptainer, podman, docker
 
 Upstream:
@@ -87,7 +83,7 @@ Upstream:
   source:  https://github.com/broadinstitute/gatk
   docs:    https://gatk.broadinstitute.org/
   docker:  https://hub.docker.com/r/broadinstitute/gatk
-  release: https://github.com/broadinstitute/gatk/releases/tag/4.6.2.0
+  release: https://github.com/broadinstitute/gatk/releases/tag/4.7.0.0
   license: Apache-2.0
   citation: McKenna et al. 2010
   doi: 10.1101/gr.107524.110

@@ -1,0 +1,6 @@
+{
+  "artifact": "taf-gatk-v4.7.0.0-r1",
+  "schema": "taffish.build/v1",
+  "source_sha256": "a89bb9b9a1c097d08d7dc4570d7b25c3c9138f5d17b1fd8689d55219ea598d7a",
+  "wrapper_sha256": "20f975f6f9a3d8ab84a170bb2616b880b908b674e508535cdea5412eb5924790"
+}
